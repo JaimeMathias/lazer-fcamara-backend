@@ -1,0 +1,21 @@
+Docker Commands
+
+# start postgres server 
+
+docker run  \
+    --name postgres \ 
+    -e POSTGRES_USER= \
+    -e POSTGRES_PASSWORD= \
+    -e POSTGRES_DB= \
+    -p 5432:5432 \
+    -d \
+    postgres
+
+# start postgres sgbd
+
+docker run \
+        --name adminer \
+        -p 8080:8080 \
+        --link postgres:postgres \
+        -d \
+        adminer
