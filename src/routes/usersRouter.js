@@ -1,9 +1,8 @@
 import { Router } from 'express';
-
+const Services = require('../services/users')
 const usersRouter = Router();
 
-usersRouter.get('/', (request, response) => {
-  response.json({ message: 'ok'})
-});
+usersRouter.get('/', Services.UsersGetAll);
+
 
 export default usersRouter;
