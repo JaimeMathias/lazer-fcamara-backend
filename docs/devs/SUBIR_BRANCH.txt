@@ -1,0 +1,15 @@
+1 - Passo: criar uma Branch Nova
+
+git checkout -b "$Nome_Da_Branch"
+
+2 - Passo: commitar as alterações feitas
+
+git status # listar os arquivos modificados
+
+git add $Nome_Do_Arquivo # adicionar o arquivo 
+
+git commit -m "$mensagem" # 'Commitar' o que foi alterado.
+
+3 - Passo: enviar a branch para pull request
+
+git push --set-upstream origin $Nome_Da_Branch
