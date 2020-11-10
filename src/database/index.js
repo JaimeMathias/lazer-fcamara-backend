@@ -10,7 +10,6 @@ const connect = () => {
     password: process.env.PRODUCTION == 'true' ? process.env.PASSWORD : "",
     port: 5432,
   });
-};   
+};
 
 export default connect();
-    
