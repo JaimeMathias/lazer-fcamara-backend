@@ -2,7 +2,7 @@
 
 # Como executar? 
 
-Clone o repositório usando o comando: ` git clone https://github.com/AndrewDiass/lazer-fcamara-backend/ ` 
+Clone o repositório usando o comando: ` git clone https://github.com/AndrewDiass/lazer-fcamara-backend.git ` 
 
 Em seguida acesse o repositório pelo terminal e use o comando: ` npm install `
 
