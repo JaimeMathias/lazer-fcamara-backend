@@ -4,7 +4,7 @@
 
 Clone o repositório usando o comando: ` git clone https://github.com/AndrewDiass/lazer-fcamara-backend/ ` 
 
-Em seguida acesse o diretório pelo terminal e rode o comando: ` npm install `
+Em seguida acesse o repositório pelo terminal e use o comando: ` npm install `
 
 Após instalar as dependências utilize: `npm run dev`
 
