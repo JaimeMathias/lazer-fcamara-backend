@@ -3,7 +3,7 @@
 # Como executar? 
 
 Clone a pasta do arquivo usando o comando: ` git clone https://github.com/AndrewDiass/lazer-fcamara-backend/ ` 
-`
+
 Em seguida acesse o diretório pelo terminal e rode o comando ` npm install `
 
 Após instalar as dependências utilize
