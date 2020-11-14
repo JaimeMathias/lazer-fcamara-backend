@@ -6,7 +6,7 @@ Clone o repositório usando o comando: ` git clone https://github.com/AndrewDias
 
 Em seguida acesse o repositório pelo terminal e use o comando: ` npm install `
 
-Após instalar as dependências utilize: `npm run dev`
+Após instalar as dependências utilize: `npm run dev` para iniciar o servidor de desenvolvimento.
 
 
 ## Link Frontend
