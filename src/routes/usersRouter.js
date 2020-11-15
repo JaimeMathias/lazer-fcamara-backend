@@ -1,16 +1,18 @@
 import { Router } from 'express';
-const Find = require('../services/find')
-const Delete = require('../services/delete')
-const Update = require('../services/update')
-const Create = require('../services/create')
+
+const UsersController = require('../controllers/UsersController')
+
+const AuthController = require('../controllers/AuthController')
 
 const usersRouter = Router();
 
-uusersRouter.get('/', Find.FindAll);
-usersRouter.get('/:id', Find.FindUnique);
-usersRouter.delete('/delete/:id', Delete.DeleteById);
-usersRouter.put('/update/:id', Update.UpdateById);
-usersRouter.post('/create', Create.Create);
+usersRouter.get('/', AuthController.Auth ,UsersController.indexAll);
+usersRouter.get('/:id', AuthController.Auth , UsersController.index);
+usersRouter.delete('/delete/:id', AuthController.Auth, UsersController.remove);
+usersRouter.put('/update/:id', AuthController.Auth, UsersController.update);
+usersRouter.post('/create', UsersController.store);
+
 
 
 export default usersRouter;
+
