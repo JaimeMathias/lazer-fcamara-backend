@@ -3,8 +3,6 @@ const { next } = require('sucrase/dist/parser/tokenizer');
 require('dotenv').config();
 const { Users } = require('../models')
 
-console.log(process.env.SECRET)
-
 class AuthServer {
     
     async login (request, response) {

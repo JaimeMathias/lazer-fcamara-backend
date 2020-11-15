@@ -38,9 +38,6 @@ module.exports = new class UserController {
                 return response.status(200).json(user)
             }
 
-            else {
-                console.log('2')
-            }
         } catch (error) {
             console.log(error)
             response.status(400).json({"msg": "Falha ao buscar"})
@@ -83,7 +80,7 @@ module.exports = new class UserController {
             if(user == null) return response.status(400).json({"msg": "User not found"}); 
 
             if(user != '') {
-                Users.destroy({
+                await Users.destroy({
                     where: {
                         id: user.id
                     }
