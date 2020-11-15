@@ -1,0 +1,9 @@
+{
+  "development": {
+    "username": "root",
+    "password": "root",
+    "database": "fcamara",
+    "host": "localhost",
+    "dialect": "postgres"
+  }
+}
