@@ -6,7 +6,18 @@ Clone o repositório usando o comando: ` git clone https://github.com/AndrewDias
 
 Em seguida acesse o repositório pelo terminal e use o comando: ` npm install `
 
-Após instalar as dependências utilize: `npm run dev` para iniciar o servidor de desenvolvimento.
+# Configurando o banco de dados
+
+# Com o docker instalado utilize
+
+`npm run postServer `
+
+# Criando as tabelas
+
+`npm run db`
+
+
+Após instalar as dependências e configurar o banco utilize: `npm run dev` para iniciar o servidor de desenvolvimento.
 
 
 ## Link Frontend
