@@ -5,7 +5,7 @@ const AuthController = require('../controllers/AuthController')
 
 const authRouter = Router();
 
-authRouter.get('/login', AuthController.login);
+authRouter.post('/login', AuthController.login);
 
 
 export default authRouter;
