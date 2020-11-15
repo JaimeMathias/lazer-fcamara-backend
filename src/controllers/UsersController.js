@@ -14,7 +14,7 @@ module.exports = new class UserController {
                 }
              });
 
-             if(user == '') {
+             if(user == '' || user == null) {
 
              response.status(400).json({msg: "User not found"});
 
