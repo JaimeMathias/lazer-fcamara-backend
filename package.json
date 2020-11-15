@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/server.js",
     "build": "sucrase ./src -d ./dist --transforms imports",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "db": "cd src && sequelize-cli db:migrate",
+    "postServer": "docker run --name postgres -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -e POSTGRES_DB=fcamara -p 5432:5432 -d postgres"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +24,7 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.6",
+    "sequelize-cli": "^6.2.0",
     "sucrase": "^3.16.0"
   }
 }
