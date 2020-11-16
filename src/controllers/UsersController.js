@@ -1,5 +1,6 @@
-const { Users} = require('../models');
-
+const { Users } = require('../models');
+require('dotenv').config();
+const jwt = require('jsonwebtoken')
 module.exports = new class UserController {
     
     async index(request, response) {
@@ -58,8 +59,16 @@ module.exports = new class UserController {
             password
         });
 
-        return response.status(200).json({msg: "Usuario criado"});
-        } catch (error) {
+        if(user) {
+            let id = user.id;
+            let token = jwt.sign({id}, process.env.SECRET, {
+                expiresIn: 10000
+            });
+          
+            return response.status(200).json({msg: "Usuario criado", token});
+            
+        }} catch (error) {
+            console.log(error)
             response.status(400).json({"msg": "Falha no cadastro"})
         }
     }   
