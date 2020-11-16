@@ -2,7 +2,7 @@ const { Users } = require('../models');
 require('dotenv').config();
 const jwt = require('jsonwebtoken')
 module.exports = new class UserController {
-    
+
     async index(request, response) {
          try {
              const { id } = request.params
@@ -44,14 +44,14 @@ module.exports = new class UserController {
             response.status(400).json({"msg": "Falha ao buscar"})
         }
     }
-    
+
 
 
     async store(request, response) {
         try {
-        
-        const { name, email, password, filial } = request.body 
-        
+
+        const { name, email, password, filial } = request.body
+
         const user = await Users.create({
             name,
             id_filial: filial,
@@ -64,14 +64,14 @@ module.exports = new class UserController {
             let token = jwt.sign({id}, process.env.SECRET, {
                 expiresIn: 10000
             });
-          
-            return response.status(200).json({msg: "Usuario criado", token});
-            
+
+            return response.status(200).json({msg: "Usuário criado", token});
+
         }} catch (error) {
             console.log(error)
             response.status(400).json({"msg": "Falha no cadastro"})
         }
-    }   
+    }
 
     async remove(request, response) {
         try {
@@ -86,7 +86,7 @@ module.exports = new class UserController {
                }
             });
 
-            if(user == null) return response.status(400).json({"msg": "User not found"}); 
+            if(user == null) return response.status(400).json({"msg": "User not found"});
 
             if(user != '') {
                 await Users.destroy({
@@ -95,7 +95,7 @@ module.exports = new class UserController {
                     }
                 })
                 return response.status(200).json({"msg": "User deleted with sucess"})
-            } 
+            }
 
         } catch (error) {
             console.log(error)
@@ -106,7 +106,7 @@ module.exports = new class UserController {
     async update(request, response) {
        try {
         const { name, password, email } = request.body
-        
+
         const { id } = request.params
 
         const Usuario = await Users.findOne({
@@ -121,7 +121,7 @@ module.exports = new class UserController {
         if(!Usuario) response.status(400).json({msg: "User not found"})
 
             const preData = [Usuario.name, Usuario.password, Usuario.email];
-            
+
             if(Usuario) {
               const final = await Usuario.update({
                     name: name != "" ? name : preData[0],
@@ -131,7 +131,7 @@ module.exports = new class UserController {
                return response.status(200).json(final)
             }
        } catch (error) {
-        console.log(error)           
+        console.log(error)
         response.status(400).json({msg: "Update not available"})
 
        }
