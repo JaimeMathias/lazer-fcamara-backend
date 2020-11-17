@@ -4,10 +4,10 @@ module.exports = new class createFilials {
 
 async store (request, response) {
   try {
-    const { filial1 } = request.body;
-    const FilialCreate = await Filials.create({location : filial1})
+    const { name } = request.body;
+    const FilialCreate = await Filials.create({location : name})
 
-    response.status(200).json({"msg": "Criado com sucesso!"})
+    response.status(200).json({"msg": "Criado com sucesso!", Filial:FilialCreate})
 
     } catch (error) {
       console.log (error)

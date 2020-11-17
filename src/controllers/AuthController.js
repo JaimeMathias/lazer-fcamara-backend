@@ -50,7 +50,13 @@ class AuthServer {
       
           });
 
-    }        
+    }  
+    async Destroy(req, res) {
+        res.json({
+        auth: false,
+        token: null
+    })
+}
 }
 
 module.exports = new AuthServer();
