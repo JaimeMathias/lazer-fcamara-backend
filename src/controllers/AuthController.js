@@ -60,3 +60,4 @@ class AuthServer {
 }
 
 module.exports = new AuthServer();
+
