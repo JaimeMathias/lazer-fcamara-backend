@@ -1,16 +1,3 @@
-//const { Model, DataTypes } = require('sequelize');
-
-//class Platforms extends Model {
-//  static init(sequelize) {
-//    super.init({
-//      name: DataTypes.STRING,
-//    }, {
-//      sequelize
-//    });
-//  }
-//}
-
-//module.exports = new Platforms;
 
 'use strict';
 const { Model } = require('sequelize');
