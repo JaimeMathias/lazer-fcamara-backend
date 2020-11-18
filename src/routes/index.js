@@ -3,6 +3,7 @@ import Router from 'express';
 import usersRouter from "./usersRouter";
 import authsRouter from "./authRoutes";
 import filialsRouter from './filialsRoutes';
+import platformsRouter from './platformsRoutes';
 
 const bodyParser = require('body-parser');
 
@@ -14,6 +15,8 @@ routes.use('/api/users', usersRouter);
 
 routes.use('/api/auth', authsRouter);
 
-routes.use ('/api/filials', filialsRouter);
+routes.use('/api/filials', filialsRouter);
+
+routes.use('/api/platforms', platformsRouter);
 
 export default routes;
