@@ -1,5 +1,5 @@
 import { Router } from 'express';
-const QueuesController = require('../controllers/QueuesController');
+const QueueController = require('../controllers/QueueController');
 
 const queuesRoutes = Router();
 
