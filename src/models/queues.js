@@ -8,10 +8,11 @@ module.exports = (sequelize, DataTypes) => {
     class Queues extends Model {
         
         static associate(models) {
-        this.hasMany(models.Users)({
+        this.belongsTo(models.Users, {
             foreignKey: 'user_id'
         })
-        this.belongsTo(models.Platforms,{
+        
+        this.belongsTo(models.Platforms, {
             foreignKey: 'platform_id'
         })
         }
@@ -20,7 +21,10 @@ module.exports = (sequelize, DataTypes) => {
         members: DataTypes.INTEGER,
         platform: DataTypes.INTEGER,
         userState: DataTypes.BOOLEAN,
-    })
-
+    }, {
+        sequelize,
+        modelName: 'Queues',
+      });
+      return Queues;
 }
  
