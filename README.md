@@ -1,23 +1,27 @@
 # lazer-fcamara-backend
 
-# Como executar?
-
-Clone o repositório usando o comando: ` git clone https://github.com/AndrewDiass/lazer-fcamara-backend.git `
-
-Em seguida acesse o repositório pelo terminal e use o comando: ` npm install `
-
-# Configurando o banco de dados
-
-# Com o docker instalado utilize
-
-`npm run postServer `
-
-# Criando as tabelas
-
-Primeiro digite o comando `npm run db` no terminal e em seguida `npm run seeders`
+ 
+<h2> Como executar o projeto? </h2>
+<h2> Pré-requisitos:  NodeJs versão >= 10 e Docker</h2>
+<ol>
+<li> Clone o repositório usando o comando: ` git clone https://github.com/AndrewDiass/lazer-fcamara-backend.git ` </li>
+<li> Em seguida acesse o repositório pelo terminal e use o comando: ` npm install `</li>
+ <li> <h2> Configurando o banco de dados </h2> </li>
+ <li> Executar o serviço Postgres com Docker: `npm run postServer`  </li>
+ <li> Criar as tabelas: `npm run db` </li>
+ <li> Inserir pré-dados essenciais com seeders: `npm run seeders` </li>
+ <li> Após todos os passos anteriores utilize: `npm run dev` </li>
+</ol>
 
 
-Após instalar as dependências e configurar o banco utilize: `npm run dev` para iniciar o servidor de desenvolvimento.
+<h2> Como executar a documentação Swagger? </h2>
+<h2> Pré-requisitos: NodeJs versão >= 10, Navegador compativel(recomenda-se Mozilla ou Google Chrome)</h2>
+<ol>
+<li> Clone o repositório usando o comando: ` git clone https://github.com/AndrewDiass/lazer-fcamara-backend.git `</li>
+<li> Em seguida acesse o repositório pelo terminal e use o comando: ` npm run swaggerIn `</li>
+<li> Após instalar : `npm run swagger` </li>
+</ol>
+
 
 
 ## Link Frontend
