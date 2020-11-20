@@ -11,7 +11,8 @@
     "db": "cd src && sequelize-cli db:migrate",
     "postServer": "docker run --name postgres -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -e POSTGRES_DB=fcamara -p 5432:5432 -d postgres",
     "seeders": "cd src && sequelize-cli db:seed:all",
-    "swagger": "cd SWAGGER && node index.js"
+    "swagger": "cd SWAGGER && node index.js",
+    "swaggerIn": "cd SWAGGER && npm install"
   },
   "keywords": [],
   "author": "",
