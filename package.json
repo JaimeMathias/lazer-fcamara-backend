@@ -9,7 +9,8 @@
     "build": "sucrase ./src -d ./dist --transforms imports",
     "start": "node dist/server.js",
     "db": "cd src && sequelize-cli db:migrate",
-    "postServer": "docker run --name postgres -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -e POSTGRES_DB=fcamara -p 5432:5432 -d postgres"
+    "postServer": "docker run --name postgres -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -e POSTGRES_DB=fcamara -p 5432:5432 -d postgres",
+    "seeders": "cd src && sequelize-cli db:seed:all"
   },
   "keywords": [],
   "author": "",

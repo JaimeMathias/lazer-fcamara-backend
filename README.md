@@ -1,8 +1,8 @@
 # lazer-fcamara-backend
 
-# Como executar? 
+# Como executar?
 
-Clone o repositório usando o comando: ` git clone https://github.com/AndrewDiass/lazer-fcamara-backend.git ` 
+Clone o repositório usando o comando: ` git clone https://github.com/AndrewDiass/lazer-fcamara-backend.git `
 
 Em seguida acesse o repositório pelo terminal e use o comando: ` npm install `
 
@@ -14,7 +14,7 @@ Em seguida acesse o repositório pelo terminal e use o comando: ` npm install `
 
 # Criando as tabelas
 
-`npm run db`
+Primeiro digite o comando `npm run db` no terminal e em seguida `npm run seeders`
 
 
 Após instalar as dependências e configurar o banco utilize: `npm run dev` para iniciar o servidor de desenvolvimento.
