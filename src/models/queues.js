@@ -9,18 +9,20 @@ module.exports = (sequelize, DataTypes) => {
         
         static associate(models) {
         this.belongsTo(models.Users, {
-            foreignKey: 'user_id'
+            foreignKey: 'id_user', 
+            as: "id_users"
         })
         
         this.belongsTo(models.Platforms, {
-            foreignKey: 'platform_id'
+            foreignKey: 'id_platform',
+            as: "id_platforms"
         })
         }
     };
     Queues.init({
-        members: DataTypes.INTEGER,
-        platform: DataTypes.INTEGER,
-        userState: DataTypes.BOOLEAN,
+        id_user: DataTypes.INTEGER,
+        id_platform: DataTypes.INTEGER,
+        status_user: DataTypes.BOOLEAN,
     }, {
         sequelize,
         modelName: 'Queues',
