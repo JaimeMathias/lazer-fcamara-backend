@@ -11,3 +11,4 @@ usersRouter.put('/:id', AuthController.Auth, UsersController.update);
 usersRouter.delete('/:id', AuthController.Auth, UsersController.remove);
 
 export default usersRouter;
+

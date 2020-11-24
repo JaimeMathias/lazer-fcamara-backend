@@ -22,3 +22,4 @@ routes.use('/api/platforms', platformsRouter);
 routes.use('/api/queues', queuesRoutes)
 
 export default routes;
+
