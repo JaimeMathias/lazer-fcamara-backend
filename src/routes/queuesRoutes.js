@@ -6,6 +6,7 @@ const queuesRoutes = Router();
 
 // Criar as rotas abaixo
 
+queuesRoutes.get('/' ,QueueController.queueData)
 queuesRoutes.put('/', AuthController.Auth ,QueueController.store)
 queuesRoutes.put('/sair', AuthController.Auth ,QueueController.quit)
 
