@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken');
 const { next } = require('sucrase/dist/parser/tokenizer');
 require('dotenv').config();
-const { Users } = require('../models')
+const { Users, Queues } = require('../models')
 
 class AuthServer {
     
-    async login (request, response) {
+    async login (request, response, next) {
         try {
         const { email , password } = request.body
 
@@ -18,11 +18,29 @@ class AuthServer {
 
         if(!Usuario) response.status(400).json({msg: "User not autenticated"})
 
+        const Redirect = await Queues.findOne({
+            where: {
+                id_user: Usuario.id,
+                status_user: true
+            }
+        })   
+        
+        const platform = Redirect.id_platform || 0
+
         if(Usuario) {
             let id = Usuario.id;
             let token = jwt.sign({id}, process.env.SECRET, {
                 expiresIn: 10000
             });
+            
+            if(platform != 0) {
+                return response.json({
+                    auth: true,
+                    token,
+                    inQueue: true,
+                    queue: platform
+                })    
+            }
 
             return response.json({
                 auth: true,
