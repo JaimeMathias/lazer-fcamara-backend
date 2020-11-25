@@ -30,7 +30,7 @@ class AuthServer {
         if(Usuario) {
             let id = Usuario.id;
             let token = jwt.sign({id}, process.env.SECRET, {
-                expiresIn: 10000
+                expiresIn: 100000
             });
             
             if(platform != 0) {
@@ -62,8 +62,8 @@ class AuthServer {
         jwt.verify(token, process.env.SECRET, function(err, decoded) {
             if (err) return response.status(500).json({ auth: false, message: 'Falha ao autenticar token.' });
             
-            request.userId = decoded.id;
-                        
+            response.locals.user = decoded;
+
             next();
       
           });

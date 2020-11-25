@@ -5,7 +5,9 @@ module.exports = new class QueuesController {
     async store(request, response) {
 
         try {
+
         const user = response.locals.user.id;
+
         const { platform } = request.body
         
         const User = await Queues.findOne({
@@ -56,7 +58,7 @@ module.exports = new class QueuesController {
         response.status(201).json({"msg": 'User is on queue', position: count});
     }
         } catch(err) {
-            console.log(err)
+         console.log(err)
          response.status(400).json({"msg": "Plataforma ou Usuário inexistentes"});
         }
     }
@@ -150,8 +152,34 @@ module.exports = new class QueuesController {
 
         } catch (error) {
             console.log(error)
-            response.status(400).json({"msg": "Erro na requisição"});      
-            
+            response.status(400).json({"msg": "Erro na requisição"});   
         }
+    }
+    async polling(request, response) {
+        const user = response.locals.user.id;
+        
+        const { platform } = request.body
+
+        const Fila = await Queues.findAll({
+            where: {
+                id_platform: platform
+            },
+            order: [[
+                'updatedAt', 'ASC'
+            ]]
+        })
+
+        let count = 1
+        Fila.forEach((item) => {
+            if(item.dataValues.id_user == user) {
+                return count;
+            }
+             count = count + 1
+        })
+        response.status(200).json({
+            position: count,
+            id_user: user
+        })
+
     }
 }
