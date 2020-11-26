@@ -7,3 +7,5 @@ const validationRoutes = Router();
 validationRoutes.post('/', validationController);
 
 export default validationController;
+
+
