@@ -84,74 +84,44 @@ module.exports = new class QueuesController {
     }
     async queueData(request, response) {
         try {
+            const plat = await Platforms.findAll();
 
-            const all = await Queues.findAll({
-                attributes: ['id', 'id_user', 'id_platform', 'status_user']
-            })
+            let obj = {}
+            let arr = []
 
-            const AllToArray = all.map(log => [log.id, log.id_user, log.id_platform, log.status_user])
+            plat.forEach( async(plataforma, indice) => {
+                
+                indice+=1
 
-            
-            // 1 = retorna um array com os usuarios do PS4 ativo
-            
-            const Playstation = AllToArray.filter((array) => {
-                if(array[3] == true && array[2] == 1) {
-                    return array[1]
-                }
-            })
-
-            // 2 = retorna um array com os usuarios do Ping Pong ativo
-            const Ping = AllToArray.filter((array) => {
-                if(array[3] == true && array[2] == 2) {
-                    return array[1]
-                }
-            })
-            
-            // 3 = retorna um array com os usuarios da Sinuca ativo
-            const Sinuca = AllToArray.filter((array) => {
-                if(array[3] == true && array[2] == 3) {
-                    return array[1]
-                }
-            })
-
-            function id(array) {
-                let arr = []
-                array.forEach((item) => {
-                    arr.push(item[1])
-                })
-                return arr;
-            }
-            
-            function returnObject(array) {
-                if(array == undefined || array == '' || array == null) {
-                    return {
-                        size: 0
+                const storage =  await Queues.findAll({
+                    raw: true,
+                    attributes: ['id_user', 'id_platform'],
+                    where: {
+                        id_platform: indice || 1
                     }
+                })
+                
+                let { id, name, location } = plataforma
+                
+                let stringName = name + ' - ' +location
+                
+                let size = storage.length 
+                
+                obj = {
+                        id_plataforma: id,
+                        Name: stringName,
+                        size,
+                    
                 }
 
-                const list = id(array)
-                const size = array.length
-                return {
-                    ids: {
-                        list,
-                    },
-                    size,
+                arr.push(obj)
+                if(indice == plat.length) {
+                    response.json(arr)
                 }
-            }
 
-            const sinucaObject = returnObject(Sinuca)
-            const pingObject = returnObject(Playstation)
-            const playObject = returnObject(Ping)
-
-            const QueueData = {
-                sinucaObject,
-                pingObject,
-                playObject
-            }
-            response.json(QueueData)
+            })
 
         } catch (error) {
-            console.log(error)
             response.status(400).json({"msg": "Erro na requisição"});   
         }
     }
@@ -183,3 +153,5 @@ module.exports = new class QueuesController {
 
     }
 }
+
+           

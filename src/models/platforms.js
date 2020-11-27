@@ -8,7 +8,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Platforms.init({
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
+    location: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Platforms',

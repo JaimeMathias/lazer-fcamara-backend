@@ -15,6 +15,7 @@ module.exports = new class UserController {
                 }
              });
 
+
              if(user == '' || user == null) {
 
              response.status(400).json({msg: "User not found"});
@@ -68,7 +69,10 @@ module.exports = new class UserController {
             return response.status(200).json({msg: "Usuário criado", token});
 
         }} catch (error) {
-            console.log(error)
+
+            if(error.errors[0]['type'] == 'unique violation') {
+                response.status(400).json({"msg": "Email ja existente"})
+            }
             response.status(400).json({"msg": "Falha no cadastro"})
         }
     }
