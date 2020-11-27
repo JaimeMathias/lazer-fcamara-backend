@@ -1,4 +1,7 @@
-const { Platforms, Queues } = require('../models')
+const { response } = require('express');
+const { next } = require('sucrase/dist/parser/tokenizer');
+const { Platforms, Queues, Users } = require('../models');
+const users = require('../models/users');
 
 module.exports = new class QueuesController {
     
@@ -155,7 +158,7 @@ module.exports = new class QueuesController {
             response.status(400).json({"msg": "Erro na requisição"});   
         }
     }
-    async polling(request, response) {
+    async polling(request, response, next) {
         const user = response.locals.user.id;
         
         const { platform } = request.body
@@ -176,10 +179,44 @@ module.exports = new class QueuesController {
             }
              count = count + 1
         })
-        response.status(200).json({
-            position: count,
-            id_user: user
-        })
 
+        const receiveEmail = await Users.findOne({
+            attributes: ['receiveEmail'],
+           where: {
+               id: user,
+           }
+        });
+        console.log(receiveEmail)
+        response.locals.position = count
+        response.locals.userId = user
+
+        next();
+
+        }
+
+    async notification (request, response) {
+        const  userData = await users.findOne({
+            where: {
+            position: users.position,
+            emailStatus: users.receiveEmail
+            }
+        })
+            try{
+    
+            
+            if (userData.receiveEmail == true && userData.position == 2 ){
+                emailASerEnviado.subject = 'Sua vez está chegando'
+                emailASerEnviado.text = 'Fique atento, você é o próximo na fila!'
+                console.log("Email enviado com sucesso.");
+            }
+            else if (userData.receiveEmail == true && userData.position == 1) {
+                emailASerEnviado.subject = 'Sua vez chegou!'
+                emailASerEnviado.text = 'É sua vez! tenha um bom jogo.'
+                console.log("Email enviado com sucesso.");
+            }
+        }catch(error){
+            console.log(error);
+        }
     }
 }
+

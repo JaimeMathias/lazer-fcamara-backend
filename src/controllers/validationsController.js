@@ -1,31 +1,28 @@
 const useNodemailer = require("nodemailer");
 
-const remetente = useNodemailer.createTransport({
+
+module.exports = new class ValidationsController {
+
+    async init(){
+    const remetete = useNodemailer.createTransport({
     host: "SMTP.office365.com",
     service: "SMTP.office365.com;",
     port: 587,
     secure: false,
     auth:{
-    user: "squad4fifo@hotmail.com",
-    pass: "fifoquad4" }
+    user: "fifosquad4@hotmail.com",
+    pass: "squad4fifo" }
     });
+    }
 
-    const emailASerEnviado = {
-        from: "squad4fifo@hotmail.com",
-        to: ",lucas@nauticarefrigeracao.com.br",
-        subject: "Enviando Email com Node.js",
-        text: "Estou te enviando este email com node.js",
-        };
-
-
-    remetente.sendMail(emailASerEnviado, function(error){
+    async sendMail(emailASerEnviado, error){
         if (error) {
         console.log(error);
         } else {
          console.log("Email enviado com sucesso.");
         }
-         });
-         
+         };
+}     
 
          
 

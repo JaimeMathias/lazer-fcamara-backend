@@ -50,13 +50,14 @@ module.exports = new class UserController {
     async store(request, response) {
         try {
 
-        const { name, email, password, filial } = request.body
+        const { name, email, password, filial, receiveEmail } = request.body
 
         const user = await Users.create({
             name,
             id_filial: filial,
             email,
-            password
+            password,
+            receiveEmail,
         });
 
         if(user) {
