@@ -60,6 +60,8 @@ module.exports = new class UserController {
             password
         });
 
+        console.log(user)
+
         if(user) {
             let id = user.id;
             let token = jwt.sign({id}, process.env.SECRET, {
@@ -69,10 +71,13 @@ module.exports = new class UserController {
             return response.status(200).json({msg: "Usuário criado", token});
 
         }} catch (error) {
+            
+            console.log(error);
 
             if(error.errors[0]['type'] == 'unique violation') {
                 response.status(400).json({"msg": "Email ja existente"})
             }
+
             response.status(400).json({"msg": "Falha no cadastro"})
         }
     }
