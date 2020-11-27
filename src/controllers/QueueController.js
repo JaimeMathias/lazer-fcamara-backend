@@ -111,10 +111,12 @@ module.exports = new class QueuesController {
                         id_plataforma: id,
                         Name: stringName,
                         size,
-                    
                 }
 
                 arr.push(obj)
+                /*
+                @ o loop so acaba quando percorrer todas as plataformas
+                 */
                 if(indice == plat.length) {
                     response.json(arr)
                 }
@@ -126,30 +128,50 @@ module.exports = new class QueuesController {
         }
     }
     async polling(request, response) {
-        const user = response.locals.user.id;
+
+        try {
+        
+        const user = response.locals.user.id
+
+        console.log(user,' =>>>>>>>>>>>>>>>')
         
         const { platform } = request.body
 
-        const Fila = await Queues.findAll({
-            where: {
-                id_platform: platform
-            },
-            order: [[
-                'updatedAt', 'ASC'
-            ]]
-        })
+            
+            const Fila = await Queues.findAll({
+                where: {
+                    id_platform: platform,
+                    status_user: true
+                },
+                order: [[
+                    'updatedAt', 'ASC'
+                ]]
+            })
+            
+            let count = 1
+            
+            Fila.forEach((item) => {
+                if(item.dataValues.id_user == user) {
+                    return count;
+                }
+                 count = count + 1
+            })
 
-        let count = 1
-        Fila.forEach((item) => {
-            if(item.dataValues.id_user == user) {
-                return count;
-            }
-             count = count + 1
-        })
         response.status(200).json({
             position: count,
-            id_user: user
-        })
+            id_user: user,
+            id_platform: Number(platform)
+        })   
+
+
+        } catch (error) {
+            response.status(400).json({
+                msg: "Erro, ao requisitar dados"
+            })
+        }
+
+             
+     
 
     }
 }
