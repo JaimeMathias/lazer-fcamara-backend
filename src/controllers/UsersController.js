@@ -47,7 +47,15 @@ module.exports = new class UserController {
   async store(request, response) {
     try {
 
-      const { name, email, password, filial } = request.body
+      const { name, password, filial } = request.body
+
+      const {email} = request.body
+
+      let regex_validate = /^[a-z0-9.]+@fcamara.com.br$/;
+
+      if(!email.match(regex_validate)) {
+        return response.status(400).json({msg: "Email incorreto"})
+      }
 
       const user = await Users.create({
         name,
@@ -57,13 +65,6 @@ module.exports = new class UserController {
       });
 
       if(user) {
-
-        let email = user.email;
-        let regex_validate = /^[a-z0-9.]+@fcamara.com.br$/;
-
-        if(!email.match(regex_validate)) {
-          return response.status(400).json({msg: "Email incorreto"})
-        }
 
         let id = user.id;
         let token = jwt.sign({id}, process.env.SECRET, {
