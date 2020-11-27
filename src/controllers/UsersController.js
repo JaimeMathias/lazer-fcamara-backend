@@ -3,147 +3,152 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken')
 module.exports = new class UserController {
 
+
     async index(request, response) {
-         try {
-             const { id } = request.params
-             const user = await Users.findOne({
-                 attributes: [
-                     'id','name', 'email', 'id_filial'
-                 ],
-                where: {
-                    id,
-                }
-             });
-
-
-             if(user == '' || user == null) {
-
-             response.status(400).json({msg: "User not found"});
-
-             }
-
-             response.json(user)
-
-         } catch (error) {
-            console.log(error)
-            response.status(400).json({"msg": "Falha ao buscar"})
-         }
+    try {
+      const { id } = request.params
+      const user = await Users.findOne({
+        attributes: [
+          'id','name', 'email', 'id_filial'
+        ],
+          where: {
+            id,
+          }
+      });
+      if(user == '' || user == null) {
+        response.status(400).json({msg: "User not found"});
+      }
+	    
+      response.json(user)
+	    
+    } catch (error) {
+      console.log(error)
+      response.status(400).json({"msg": "Falha ao buscar"})
     }
+  }
+	
+  async indexAll(request, response) {
+    try {
+      const user = await Users.findAll({
+        attributes: ['id', 'name', 'email', 'id_filial']
+      });
 
-    async indexAll(request, response) {
-        try {
-            const user = await Users.findAll({
-                attributes: ['id', 'name', 'email', 'id_filial']
-            });
-
-            if(user != '') {
-                return response.status(200).json(user)
-            }
-
-        } catch (error) {
-            console.log(error)
-            response.status(400).json({"msg": "Falha ao buscar"})
-        }
+      if(user != '') {
+        return response.status(200).json(user)
+      }
+    } catch (error) {
+      console.log(error)
+      response.status(400).json({"msg": "Falha ao buscar"})
     }
+  }
 
+  async store(request, response) {
+    try {
+      const { name, password, filial } = request.body
+      const {email} = request.body
 
+      let regex_validate = /^[a-z0-9.]+@fcamara.com.br$/;
 
-    async store(request, response) {
-        try {
+      if(!email.match(regex_validate)) {
+        return response.status(400).json({msg: "Email incorreto"})
+      }
 
-        const { name, email, password, filial } = request.body
+      const user = await Users.create({
+        name,
+        id_filial: filial,
+        email,
+        password
+      });
 
-        const user = await Users.create({
-            name,
-            id_filial: filial,
-            email,
-            password
+      if(user) {
+        let id = user.id;
+        let token = jwt.sign({id}, process.env.SECRET, {
+          expiresIn: 10000
         });
 
-        console.log(user)
+        return response.status(200).json({msg: "Usuário criado", token});
+      }} 
 
-        if(user) {
-            let id = user.id;
-            let token = jwt.sign({id}, process.env.SECRET, {
-                expiresIn: 10000
-            });
-
-            return response.status(200).json({msg: "Usuário criado", token});
-
-        }} catch (error) {
+    } catch (error) {
             
             console.log(error);
 
             if(error.errors[0]['type'] == 'unique violation') {
                 response.status(400).json({"msg": "Email ja existente"})
             }
-
+	    
             response.status(400).json({"msg": "Falha no cadastro"})
-        }
     }
 
-    async remove(request, response) {
-        try {
-            const { id } = request.params
+  async remove(request, response) {
+    try {
+      const { id } = request.params
 
-            const user = await Users.findOne({
-                attributes: [
-                    'id','name', 'email', 'id_filial'
-                ],
-               where: {
-                   id,
-               }
-            });
-
-            if(user == null) return response.status(400).json({"msg": "User not found"});
-
-            if(user != '') {
-                await Users.destroy({
-                    where: {
-                        id: user.id
-                    }
-                })
-                return response.status(200).json({"msg": "User deleted with sucess"})
-            }
-
-        } catch (error) {
-            console.log(error)
-            response.status(400).json({"msg": "Falha ao deletar"})
+      const user = await Users.findOne({
+        attributes: [
+          'id','name', 'email', 'id_filial'
+        ],
+        where: {
+          id,
         }
-    }
+      });
 
-    async update(request, response) {
-       try {
-        const { name, password, email } = request.body
+      if(user == null) return response.status(400).json({"msg": "User not found"});
 
-        const { id } = request.params
-
-        const Usuario = await Users.findOne({
-            attributes: [
-                'id','name', 'email', 'id_filial', 'password'
-            ],
-           where: {
-               id,
-           }
-        });
-
-        if(!Usuario) response.status(400).json({msg: "User not found"})
-
-            const preData = [Usuario.name, Usuario.password, Usuario.email];
-
-            if(Usuario) {
-              const final = await Usuario.update({
-                    name: name != "" ? name : preData[0],
-                    password: password != "" ? password : preData[1],
-                    email: email != "" ? email : preData[2]
-                })
-               return response.status(200).json(final)
+        if(user != '') {
+          await Users.destroy({
+            where: {
+              id: user.id
             }
-       } catch (error) {
+          })
+          return response.status(200).json({"msg": "User deleted with sucess"})
+        }
+
+    } catch (error) {
+        console.log(error)
+        response.status(400).json({"msg": "Falha ao deletar"})
+    }
+  }
+
+  async update(request, response) {
+    try {
+      const { name, password, email } = request.body
+
+      const { id } = request.params
+
+      const user = await Users.findOne({
+        attributes: [
+          'id','name', 'email', 'id_filial', 'password'
+        ],
+        where: {
+          id,
+        }
+      });
+
+      if(!user) response.status(400).json({msg: "User not found"})
+
+        const preData = [user.name, user.password, user.email];
+
+          if(user) {
+            const final = await user.update({
+              name: name != "" ? name : preData[0],
+              password: password != "" ? password : preData[1],
+              email: email != "" ? email : preData[2]
+            })
+
+            let regex_validate = /^[a-z0-9.]+@fcamara.com.br$/;
+
+            if(!email.match(regex_validate)) {
+              return response.status(400).json({msg: "Email incorreto"})
+            }
+
+            return response.status(200).json(final)
+          }
+      } catch (error) {
         console.log(error)
         response.status(400).json({msg: "Update not available"})
 
-       }
-    }
+      }
+  }
 }
 

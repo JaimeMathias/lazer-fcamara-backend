@@ -4,18 +4,6 @@ require('dotenv').config();
 const { Users, Queues, Platforms } = require('../models')
 
 class AuthServer {
-    
-    async login (request, response, next) {
-        try {
-        const { email , password } = request.body
-
-        const Usuario = await Users.findOne({
-            where: {
-               email,
-               password, 
-            }
-        })
-
         if(!Usuario) response.status(400).json({msg: "User not autenticated"})
 
         const Redirect = await Queues.findAll({
@@ -31,8 +19,6 @@ class AuthServer {
             }]
         })   
         
-        // console.log(Redirect[0])
-        // console.log(Redirect)
 
         const platform = Redirect[0].dataValues || 0
 
@@ -86,7 +72,18 @@ class AuthServer {
                 msg: "Error to connect"
             })
         }
+
+        return response.json({
+          auth: true,
+          token,
+        })
+      }
+    } catch (error) {
+      return response.status(400).json({
+        msg: "Error to create a connection"
+      })
     }
+
     async Auth (request, response, next) {
         let token = request.headers['x-access-token']
 
@@ -106,8 +103,15 @@ class AuthServer {
         res.json({
         auth: false,
         token: null
+  }
+
+
+  async Destroy(request, response) {
+    response.json({
+      auth: false,
+      token: null
     })
-}
+  }
 }
 
 module.exports = new AuthServer();
