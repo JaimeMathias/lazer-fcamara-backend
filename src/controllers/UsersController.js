@@ -3,7 +3,8 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken')
 module.exports = new class UserController {
 
-  async index(request, response) {
+
+    async index(request, response) {
     try {
       const { id } = request.params
       const user = await Users.findOne({
@@ -14,21 +15,18 @@ module.exports = new class UserController {
             id,
           }
       });
-
       if(user == '' || user == null) {
-
         response.status(400).json({msg: "User not found"});
-
       }
-
+	    
       response.json(user)
-
+	    
     } catch (error) {
       console.log(error)
       response.status(400).json({"msg": "Falha ao buscar"})
     }
   }
-
+	
   async indexAll(request, response) {
     try {
       const user = await Users.findAll({
@@ -46,9 +44,7 @@ module.exports = new class UserController {
 
   async store(request, response) {
     try {
-
       const { name, password, filial } = request.body
-
       const {email} = request.body
 
       let regex_validate = /^[a-z0-9.]+@fcamara.com.br$/;
@@ -65,20 +61,24 @@ module.exports = new class UserController {
       });
 
       if(user) {
-
         let id = user.id;
         let token = jwt.sign({id}, process.env.SECRET, {
           expiresIn: 10000
         });
 
         return response.status(200).json({msg: "Usuário criado", token});
+      }} 
 
-      }
     } catch (error) {
-      console.log(error)
-      response.status(400).json({"msg": "Falha no cadastro"})
+            
+            console.log(error);
+
+            if(error.errors[0]['type'] == 'unique violation') {
+                response.status(400).json({"msg": "Email ja existente"})
+            }
+	    
+            response.status(400).json({"msg": "Falha no cadastro"})
     }
-  }
 
   async remove(request, response) {
     try {

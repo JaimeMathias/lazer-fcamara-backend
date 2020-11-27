@@ -4,8 +4,8 @@ module.exports = new class PlatformsController {
 
   async store (request, response) {
     try {
-      const { name } = request.body;
-      const platform = await Platforms.create({name: name});
+      const { name, location } = request.body;
+      const platform = await Platforms.create({name: name, location,});
 
       response.status(201).json({"msg": "created at success"})
 

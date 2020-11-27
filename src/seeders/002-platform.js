@@ -4,20 +4,20 @@ module.exports = {
   up: (queryInterface, Sequelize) => queryInterface.bulkInsert('Platforms',
   [
     {
-      id: 1,
       name: 'PlayStation 4',
+      location: 'Recreacao',
       createdAt: new Date(),
       updatedAt: new Date()
     },
     {
-      id: 2,
-      name: 'Ping Pong',
+      name: 'PlayStation 4',
+      location: 'Sala Zelda',
       createdAt: new Date(),
       updatedAt: new Date()
     },
     {
-      id: 3,
       name: 'Sinuca',
+      location: 'Patio',
       createdAt: new Date(),
       updatedAt: new Date()
     }
