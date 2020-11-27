@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { next } = require('sucrase/dist/parser/tokenizer');
 require('dotenv').config();
-const { Users, Queues } = require('../models')
+const { Users, Queues, Platforms } = require('../models')
 
 class AuthServer {
     
@@ -18,28 +18,62 @@ class AuthServer {
 
         if(!Usuario) response.status(400).json({msg: "User not autenticated"})
 
-        const Redirect = await Queues.findOne({
+        const Redirect = await Queues.findAll({
             where: {
                 id_user: Usuario.id,
                 status_user: true
-            }
+            },
+            include: [{
+                model: Platforms,
+                as: 'id_platforms',
+                required: true,
+                attributes: ['id' ,'name']
+            }]
         })   
         
-        const platform = Redirect.id_platform || 0
+        // console.log(Redirect[0])
+        // console.log(Redirect)
 
+        const platform = Redirect[0].dataValues || 0
+
+        const { id_user, id_platform } = platform
+
+        const { name } = platform.id_platforms
+        
         if(Usuario) {
             let id = Usuario.id;
             let token = jwt.sign({id}, process.env.SECRET, {
                 expiresIn: 100000
             });
-            
+            // @@ se o usuario estiver cadastrado em fila redireciona
             if(platform != 0) {
-                return response.json({
+                
+                const Fila = await Queues.findAll({
+                    where: {
+                        id_platform,
+                        status_user: true
+                    },
+                    order: [[
+                        'updatedAt', 'ASC'
+                    ]]
+                })
+                
+                let count = 1
+                
+                Fila.forEach((item) => {
+                    if(item.dataValues.id_user == id_user) {
+                        return count;
+                    }
+                     count = count + 1
+                })
+                
+                response.status(200).json({
                     auth: true,
                     token,
-                    inQueue: true,
-                    queue: platform
-                })    
+                    id_platform,
+                    name,
+                    position: count
+                })
             }
 
             return response.json({
@@ -49,11 +83,10 @@ class AuthServer {
         }    
         } catch (error) {
             return response.status(400).json({
-                msg: "Error to create a connection"
+                msg: "Error to connect"
             })
         }
     }
-
     async Auth (request, response, next) {
         let token = request.headers['x-access-token']
 
