@@ -1,18 +1,21 @@
 const jwt = require('jsonwebtoken');
 const { next } = require('sucrase/dist/parser/tokenizer');
 require('dotenv').config();
+const crypto = require('crypto');
 const { Users, Queues, Platforms } = require('../models')
 
 class AuthServer {
 
     async login (request, response, next) {
         try {
-        const { email , password } = request.body
+        let { email , password } = request.body
+
+        let hash = crypto.createHash('md5').update(password).digest("hex")
 
         const Usuario = await Users.findOne({
             where: {
                email,
-               password, 
+               password: hash
             }
         })
 
@@ -72,6 +75,7 @@ class AuthServer {
                     name,
                     position: count
                 })
+                return;
             }
 
             return response.json({
@@ -80,6 +84,7 @@ class AuthServer {
             })
         }    
         } catch (error) {
+            console.log(error)
             return response.status(400).json({
                 msg: "Error to connect"
             })
