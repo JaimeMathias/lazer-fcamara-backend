@@ -1,109 +1,104 @@
-const { Platforms } = require ('../models')
+const { Platforms } = require("../models");
 
-module.exports = new class PlatformsController {
-
-  async store (request, response) {
+module.exports = new (class PlatformsController {
+  async store(request, response) {
     try {
       const { name, location } = request.body;
-      const platform = await Platforms.create({name: name, location,});
+      const platform = await Platforms.create({ name: name, location });
 
-      response.status(201).json({"msg": "created at success"})
-
+      response.status(201).json({ msg: "created at success" });
     } catch (error) {
-      console.log (error)
-      response.status(400).json({"msg": "failed to create"})
+      console.log(error);
+      response.status(400).json({ msg: "failed to create" });
     }
   }
 
   async index(request, response) {
     try {
-      const { id } = request.params
+      const { id } = request.params;
 
       const platform = await Platforms.findOne({
-        attributes: ['id','name'],
-        where: {id}
+        attributes: ["id", "name"],
+        where: { id },
       });
 
-      if(platform == '' || platform == null) {
-        response.status(404).json({msg: "Platform not found"});
+      if (platform == "" || platform == null) {
+        response.status(404).json({ msg: "Platform not found" });
       }
-      response.json(platform)
-
+      response.json(platform);
     } catch (error) {
-      console.log(error)
-      response.status(404).json({"msg": "Platform not found"})
+      console.log(error);
+      response.status(404).json({ msg: "Platform not found" });
     }
   }
 
   async indexAll(request, response) {
     try {
       const platform = await Platforms.findAll({
-        attributes: ['id','name']
+        attributes: ["id", "name"],
       });
 
-      if(platform != '') {
-        return response.status(200).json(platform)
+      if (platform != "") {
+        return response.status(200).json(platform);
       }
-
     } catch (error) {
-      console.log(error)
-      response.status(404).json({"msg": "Platforms not found"})
+      console.log(error);
+      response.status(404).json({ msg: "Platforms not found" });
     }
   }
 
   async update(request, response) {
     try {
-      const { name } = request.body
+      const { name } = request.body;
 
-      const { id } = request.params
+      const { id } = request.params;
 
       const platform = await Platforms.findOne({
-        attributes: ['id','name'],
-        where: {id}
+        attributes: ["id", "name"],
+        where: { id },
       });
 
-      if(!platform) response.status(404).json({msg: "Platform not found"})
-        const preData = [platform.name];
+      if (!platform) response.status(404).json({ msg: "Platform not found" });
+      const preData = [platform.name];
 
-        if(platform) {
-          const final = await platform.update({
-            name: name != "" ? name : preData[0],
-          });
-          return response.status(200).json(final)
-        }
-
+      if (platform) {
+        const final = await platform.update({
+          name: name != "" ? name : preData[0],
+        });
+        return response.status(200).json(final);
+      }
     } catch (error) {
-      console.log(error)
-      response.status(400).json({msg: "Bad Request"})
+      console.log(error);
+      response.status(400).json({ msg: "Bad Request" });
     }
   }
 
   async remove(request, response) {
     try {
-      const { id } = request.params
+      const { id } = request.params;
 
       const platform = await Platforms.findOne({
-        attributes: ['id'],
-        where: {id}
+        attributes: ["id"],
+        where: { id },
       });
 
-      if(!platform) {
-        return response.status(400).json({error: 'Platform not found'});
+      if (!platform) {
+        return response.status(400).json({ error: "Platform not found" });
       }
 
-      if(platform != '') {
+      if (platform != "") {
         await Platforms.destroy({
           where: {
-            id: platform.id
-          }
+            id: platform.id,
+          },
         });
-        return response.status(200).json({"msg": "Platform deleted with sucess"})
+        return response
+          .status(200)
+          .json({ msg: "Platform deleted with sucess" });
       }
-
     } catch (error) {
-      console.log(error)
-      response.status(400).json({"msg": "Bad Request"})
+      console.log(error);
+      response.status(400).json({ msg: "Bad Request" });
     }
   }
-
-}
+})();
