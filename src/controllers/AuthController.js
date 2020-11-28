@@ -34,21 +34,28 @@ class AuthServer {
             }]
         })   
         
+        let platform, id_user, id_platform, name; 
+        
 
-        const platform = Redirect[0].dataValues || 0
+        if(Redirect != "") {
+            console.log('chega aqui')
 
-        const { id_user, id_platform } = platform
-
-        const { name } = platform.id_platforms
+            platform = Redirect[0].dataValues
+            id_user = platform.id_user
+            
+            id_platform = platform.id_platform
+            
+            name = platform.name
+        }
         
         if(Usuario) {
             let id = Usuario.id;
             let token = jwt.sign({id}, process.env.SECRET, {
                 expiresIn: 100000
             });
+            
             // @@ se o usuario estiver cadastrado em fila redireciona
-            if(platform != 0) {
-                
+            if(platform) {
                 const Fila = await Queues.findAll({
                     where: {
                         id_platform,
