@@ -3,10 +3,12 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken')
 module.exports = new class UserController {
 
-
     async index(request, response) {
-    try {
+   
+      try {
+
       const { id } = request.params
+
       const user = await Users.findOne({
         attributes: [
           'id','name', 'email', 'id_filial'
@@ -15,6 +17,7 @@ module.exports = new class UserController {
             id,
           }
       });
+
       if(user == '' || user == null) {
         response.status(400).json({msg: "User not found"});
       }
@@ -29,6 +32,7 @@ module.exports = new class UserController {
 	
   async indexAll(request, response) {
     try {
+
       const user = await Users.findAll({
         attributes: ['id', 'name', 'email', 'id_filial']
       });
@@ -36,15 +40,19 @@ module.exports = new class UserController {
       if(user != '') {
         return response.status(200).json(user)
       }
+
     } catch (error) {
-      console.log(error)
+   
       response.status(400).json({"msg": "Falha ao buscar"})
+   
     }
   }
 
   async store(request, response) {
     try {
+
       const { name, password, filial } = request.body
+      
       const {email} = request.body
 
       let regex_validate = /^[a-z0-9.]+@fcamara.com.br$/;
@@ -67,20 +75,17 @@ module.exports = new class UserController {
         });
 
         return response.status(200).json({msg: "Usuário criado", token});
-      }} 
-
+      }
     } catch (error) {
             
-            console.log(error);
-
             if(error.errors[0]['type'] == 'unique violation') {
                 response.status(400).json({"msg": "Email ja existente"})
             }
 	    
             response.status(400).json({"msg": "Falha no cadastro"})
-    }
-
-  async remove(request, response) {
+    }  
+  }
+    async remove(request, response) {
     try {
       const { id } = request.params
 
@@ -103,13 +108,11 @@ module.exports = new class UserController {
           })
           return response.status(200).json({"msg": "User deleted with sucess"})
         }
-
     } catch (error) {
         console.log(error)
-        response.status(400).json({"msg": "Falha ao deletar"})
+        response.status(400).json({"msg": "Falha ao deletar"});
     }
   }
-
   async update(request, response) {
     try {
       const { name, password, email } = request.body
@@ -125,8 +128,9 @@ module.exports = new class UserController {
         }
       });
 
-      if(!user) response.status(400).json({msg: "User not found"})
-
+      if(!user) {
+        response.status(400).json({msg: "User not found"})
+      } 
         const preData = [user.name, user.password, user.email];
 
           if(user) {
@@ -143,12 +147,11 @@ module.exports = new class UserController {
             }
 
             return response.status(200).json(final)
+          
           }
       } catch (error) {
         console.log(error)
-        response.status(400).json({msg: "Update not available"})
-
+        response.status(400).json({msg: "Update not available"});
       }
   }
 }
-
