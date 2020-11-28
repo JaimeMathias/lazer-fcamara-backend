@@ -6,7 +6,7 @@ module.exports = new (class QueuesController {
       const user = response.locals.user.id;
 
       const { platform } = request.body;
-
+console.log('O ERRO TA AQUI PARCEIRO', platform)
       const User = await Queues.findOne({
         where: {
           id_user: user,
@@ -21,7 +21,8 @@ module.exports = new (class QueuesController {
       const Fila = await Queues.findAll({
         where: {
           id_platform: platform,
-        },
+	status_user: true       
+ },
         order: [["updatedAt", "ASC"]],
       });
 
@@ -88,7 +89,8 @@ module.exports = new (class QueuesController {
           attributes: ["id_user", "id_platform"],
           where: {
             id_platform: indice || 1,
-          },
+	status_user: true        
+  },
         });
 
         let { id, name, location } = plataforma;
@@ -138,8 +140,7 @@ module.exports = new (class QueuesController {
       });
 
       response.status(200).json({
-        position: count,
-        id_platform: Number(platform),
+        position: count
       });
     } catch (error) {
       console.log(error);
