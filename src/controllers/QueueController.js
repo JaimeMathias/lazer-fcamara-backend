@@ -6,7 +6,7 @@ module.exports = new (class QueuesController {
       const user = response.locals.user.id;
 
       const { platform } = request.body;
-console.log('O ERRO TA AQUI PARCEIRO', platform)
+      console.log('O ERRO TA AQUI PARCEIRO', platform)
       const User = await Queues.findOne({
         where: {
           id_user: user,
@@ -21,8 +21,8 @@ console.log('O ERRO TA AQUI PARCEIRO', platform)
       const Fila = await Queues.findAll({
         where: {
           id_platform: platform,
-	status_user: true       
- },
+	        status_user: true
+        },
         order: [["updatedAt", "ASC"]],
       });
 
@@ -52,7 +52,7 @@ console.log('O ERRO TA AQUI PARCEIRO', platform)
       }
     } catch (err) {
       console.log(err);
-      response.status(400).json({ msg: "Plataforma ou Usuário inexistentes" });
+      response.status(400).json({ msg: "Plataform or user not exists" });
     }
   }
 
@@ -81,7 +81,7 @@ console.log('O ERRO TA AQUI PARCEIRO', platform)
       let obj = {};
       let arr = [];
 
-      plat.forEach(async (plataforma, indice) => {
+      plat.forEach(async (platform, indice) => {
         indice += 1;
 
         const storage = await Queues.findAll({
@@ -89,18 +89,18 @@ console.log('O ERRO TA AQUI PARCEIRO', platform)
           attributes: ["id_user", "id_platform"],
           where: {
             id_platform: indice || 1,
-	status_user: true        
-  },
+	          status_user: true
+          },
         });
 
-        let { id, name, location } = plataforma;
+        let { id, name, location } = platform;
 
         // let stringName = name + ' - ' +location
 
         let size = storage.length;
 
         obj = {
-          id_plataforma: id,
+          id_platform: id,
           size,
         };
 
