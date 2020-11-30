@@ -58,6 +58,7 @@ module.exports = new (class UserController {
         id_filial: filial,
         email,
         password: hash,
+        receiveEmail: true
       });
 
       
