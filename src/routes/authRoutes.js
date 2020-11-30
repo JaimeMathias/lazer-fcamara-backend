@@ -6,6 +6,7 @@ const AuthController = require('../controllers/AuthController')
 
 const authRouter = Router();
 
+authRouter.get('/' ,AuthController.validate);
 authRouter.post('/', AuthController.login);
 authRouter.delete('/', AuthController.Destroy);
 
