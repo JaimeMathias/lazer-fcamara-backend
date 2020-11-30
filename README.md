@@ -10,12 +10,19 @@
  <li> Executar o serviço Postgres com Docker: `npm run postServer`  </li>
  <li> Criar as tabelas: `npm run db` </li>
  <li> Inserir pré-dados essenciais com seeders: `npm run seeders` </li>
- <li> Após todos os passos anteriores utilize: `npm run dev` </li>
+  
+<li> <h2> Configurando .env </h2> </li>
+<li> Crie um arquivo na raiz do projeto com o nome de .env, esse arquivo irá seguir a estrutura do .env-example </li>
+<li> Preencha valores nos campos criados anteriormente </li>
+<li> Após todos os passos anteriores utilize: `npm run dev` </li>
 </ol>
 
 
+## Endereço servidor API
 
-## Link Documentação
+url: 206.189.189.136:3333/
+
+## Link Documentação 
 
 link: https://github.com/jgsouzadev/SWAGGER_FIFO
 
