@@ -58,7 +58,7 @@ class AuthServer {
                 status_user: true
               },
               order: [[
-                'updatedAt', 'ASC'
+                'updatedAt', 'DESC'
               ]]
             })
 
@@ -142,13 +142,13 @@ class AuthServer {
           id_platform: Platform.id_platform,
 	        status_user: true
         },
-        order: [["updatedAt", "ASC"]],
+        order: [["updatedAt", "DESC"]],
       });
 
 
       let count = 1;
       Fila.forEach((item) => {
-        if (item.dataValues.id_user == user) {
+        if (item.dataValues.id_user == decoded.id) {
           return count;
         }
         count = count + 1;
