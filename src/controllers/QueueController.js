@@ -101,8 +101,19 @@ console.log(ReceiveEmail)
   async disableNotification(request, response) {
     try {
       const user = response.locals.user.id;
+
+      const atualStatus = await Users.findOne({
+        raw: true,
+        attributes: ['receiveEmail'],
+        where: {
+          id: user
+        }
+      })
+
+      const args = atualStatus.receiveEmail == true ? false : true;
+
       const userUpdate = await Users.update(
-        {receiveEmail: false},
+        {receiveEmail: args},
         {where: {id: user}}
       )
       console.log(userUpdate)
@@ -119,27 +130,6 @@ console.log(ReceiveEmail)
     }
   }
   
-
-  async allowNotification(request, response) {
-    try {
-      const user = response.locals.user.id;
-      const userUpdate = await Users.update(
-        {receiveEmail: true},
-        {where: {id: user}}
-      )
-      console.log(userUpdate)
-      
-
-    return response.status(200).json({
-      msg: "Status atualizado com sucesso"
-    })
-    } catch (error) {
-      console.log(error)
-      return response.status(200).json({
-        msg: "Erro na request"
-      })
-    }
-  }
 
   async queueData(request, response) {
     try {

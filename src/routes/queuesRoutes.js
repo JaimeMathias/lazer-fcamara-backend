@@ -11,6 +11,5 @@ queuesRoutes.get('/polling/:platform', AuthController.Auth, QueueController.poll
 queuesRoutes.post('/', AuthController.Auth ,QueueController.store)
 queuesRoutes.put('/exit', AuthController.Auth ,QueueController.quit)
 queuesRoutes.put('/disable-notification', AuthController.Auth ,QueueController.disableNotification)
-queuesRoutes.put('/allow-notification', AuthController.Auth ,QueueController.allowNotification)
 
 export default queuesRoutes;
