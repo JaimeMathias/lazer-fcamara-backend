@@ -127,6 +127,8 @@ class AuthServer {
         }
       })
 
+      
+
       const User = await Users.findOne({
         raw: true,
         attributes: ['receiveEmail'],
@@ -135,13 +137,32 @@ class AuthServer {
         }
       })
 
+      const Fila = await Queues.findAll({
+        where: {
+          id_platform: Platform.id_platform,
+	        status_user: true
+        },
+        order: [["updatedAt", "ASC"]],
+      });
+
+
+      let count = 1;
+      Fila.forEach((item) => {
+        if (item.dataValues.id_user == user) {
+          return count;
+        }
+        count = count + 1;
+      });
+
+
       if(Platform == '' || Platform == undefined) {
         return response.status(200).json({auth: true, allowNotification: User.receiveEmail})
       } else {
         return response.status(201).json({
           auth: true,
           id_platform: Platform.id_platform,
-          allowNotification: User.receiveEmail
+          allowNotification: User.receiveEmail,
+          position: count
         })
       }
 
