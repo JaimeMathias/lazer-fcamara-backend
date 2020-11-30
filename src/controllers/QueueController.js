@@ -30,7 +30,7 @@ console.log(ReceiveEmail)
           id_platform: platform,
 	        status_user: true
         },
-        order: [["updatedAt", "ASC"]],
+        order: [["updatedAt", "DESC"]],
       });
 
       let count = 1;
@@ -224,11 +224,14 @@ console.log(ReceiveEmail)
       let count = 1;
 
       Fila.forEach((item) => {
+console.log(item.dataValues)
         if (item.dataValues.id_user == user) {
-          return count;
-        }
+	console.log(item.dataValues.id_user,'=< id user')
+console.log(user)    
+      return count;
+        } else {
         count = count + 1;
-      });
+ }     });
 
       if(userEmail.receiveEmail == true && userEmail.receiveEmail == true) {
         if(emailsNoRepeat != null) {
