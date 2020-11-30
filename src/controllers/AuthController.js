@@ -33,7 +33,6 @@ class AuthServer {
             attributes: ['id' ,'name']
           }]
         });
-
         let platform, id_user, id_platform, name;
 
         if(Redirect != "") {

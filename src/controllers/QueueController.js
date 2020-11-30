@@ -14,11 +14,17 @@ module.exports = new (class QueuesController {
           id_platform: platform,
         },
       });
-
+      const ReceiveEmail = await Users.findOne({
+        raw:true,
+        attributes: ['receiveEmail'],
+        where: {
+          id: user
+        }
+      })
       /*
        * @ retorna a posição do usuário e a fila
        */
-
+console.log(ReceiveEmail)
       const Fila = await Queues.findAll({
         where: {
           id_platform: platform,
@@ -39,7 +45,7 @@ module.exports = new (class QueuesController {
         await User.update({
           status_user: true,
         });
-        response.status(201).json({ msg: "User is on queue", position: count });
+        response.status(201).json({ msg: "User is on queue", position: count, notification:  ReceiveEmail.receiveEmail});
       }
 
       if (!User) {
@@ -49,7 +55,7 @@ module.exports = new (class QueuesController {
           id_platform: platform,
           status_user: true,
         });
-        response.status(201).json({ msg: "User is on queue", position: count });
+        response.status(201).json({ msg: "User is on queue", position: count, notification:  ReceiveEmail.receiveEmail });
       }
     } catch (err) {
       console.log(err);
@@ -92,6 +98,49 @@ module.exports = new (class QueuesController {
     }
   }
 
+  async disableNotification(request, response) {
+    try {
+      const user = response.locals.user.id;
+      const userUpdate = await Users.update(
+        {receiveEmail: false},
+        {where: {id: user}}
+      )
+      console.log(userUpdate)
+      
+
+    return response.status(200).json({
+      msg: "Status atualizado com sucesso"
+    })
+    } catch (error) {
+      console.log(error)
+      return response.status(200).json({
+        msg: "Erro na request"
+      })
+    }
+  }
+  
+
+  async allowNotification(request, response) {
+    try {
+      const user = response.locals.user.id;
+      const userUpdate = await Users.update(
+        {receiveEmail: true},
+        {where: {id: user}}
+      )
+      console.log(userUpdate)
+      
+
+    return response.status(200).json({
+      msg: "Status atualizado com sucesso"
+    })
+    } catch (error) {
+      console.log(error)
+      return response.status(200).json({
+        msg: "Erro na request"
+      })
+    }
+  }
+
   async queueData(request, response) {
     try {
       const plat = await Platforms.findAll();
@@ -119,7 +168,6 @@ module.exports = new (class QueuesController {
 
         obj = {
           id_platform: id,
-          stringName,
           size,
         };
         arr.push(obj);
