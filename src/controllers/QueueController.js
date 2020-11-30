@@ -45,6 +45,7 @@ console.log(ReceiveEmail)
         await User.update({
           status_user: true,
         });
+        
         response.status(201).json({ msg: "User is on queue", position: count, notification:  ReceiveEmail.receiveEmail});
       }
 
