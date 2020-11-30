@@ -75,6 +75,9 @@ class AuthServer {
               auth: true,
               token,
               id_platform,
+              allowNotification: user.dataValues.receiveEmail,
+              position: count
+            
             })
             return;
           }
@@ -82,6 +85,7 @@ class AuthServer {
           return response.json({
             auth: true,
             token,
+            allowNotification: user.dataValues.receiveEmail
           })
         }
     }catch (error) {
@@ -123,12 +127,21 @@ class AuthServer {
         }
       })
 
+      const User = await Users.findOne({
+        raw: true,
+        attributes: ['receiveEmail'],
+        where: {
+          id: decoded.id
+        }
+      })
+
       if(Platform == '' || Platform == undefined) {
-        return response.status(200).json({auth: true})
+        return response.status(200).json({auth: true, allowNotification: User.receiveEmail})
       } else {
         return response.status(201).json({
           auth: true,
-          id_platform: Platform.id_platform
+          id_platform: Platform.id_platform,
+          allowNotification: User.receiveEmail
         })
       }
 
