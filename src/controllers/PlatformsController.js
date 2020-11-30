@@ -18,7 +18,7 @@ module.exports = new (class PlatformsController {
       const { id } = request.params;
 
       const platform = await Platforms.findOne({
-        attributes: ["id", "name"],
+        attributes: ["id", "name", 'location'],
         where: { id },
       });
 
@@ -35,7 +35,7 @@ module.exports = new (class PlatformsController {
   async indexAll(request, response) {
     try {
       const platform = await Platforms.findAll({
-        attributes: ["id", "name"],
+        attributes: ["id", "name", 'location'],
       });
 
       if (platform != "") {
