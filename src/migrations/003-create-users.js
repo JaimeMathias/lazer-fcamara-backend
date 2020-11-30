@@ -29,6 +29,10 @@ module.exports = {
           key: 'id'
         }
       },
+      receiveEmail: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
