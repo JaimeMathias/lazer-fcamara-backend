@@ -59,7 +59,7 @@ console.log(ReceiveEmail)
       }
     } catch (err) {
       console.log(err);
-      response.status(400).json({ msg: "Plataform or user not exists" });
+      response.status(500).json({ msg: "Server error." });
     }
   }
 
@@ -91,10 +91,10 @@ console.log(ReceiveEmail)
         status_user: false,
       });
 
-      response.status(201).json({ msg: "Saiu com sucesso" });
+      response.status(201).json({ msg: "Exited with sucessfully" });
     } catch (error) {
       console.log(error);
-      response.status(400).json({ msg: "Plataforma ou Usuário inexistentes" });
+      response.status(500).json({ msg: "Server error, try again!" });
     }
   }
 
@@ -120,12 +120,12 @@ console.log(ReceiveEmail)
       
 
     return response.status(200).json({
-      msg: "Status atualizado com sucesso"
+      msg: "Status updated with sucessfully"
     })
     } catch (error) {
       console.log(error)
-      return response.status(200).json({
-        msg: "Erro na request"
+      return response.status(500).json({
+        msg: "Error on request"
       })
     }
   }
@@ -187,7 +187,7 @@ console.log(ReceiveEmail)
 
     } catch (error) {
       console.log(error)
-      response.status(400).json({ msg: "Error on request" });
+      response.status(500).json({ msg: "Error on request" });
     }
   }
   async polling(request, response) {
@@ -248,8 +248,8 @@ console.log(ReceiveEmail)
       });
     } catch (error) {
       console.log(error);
-      response.status(400).json({
-        msg: "Erro, ao requisitar dados",
+      response.status(500).json({
+        msg: "Error on server",
       });
     }
   }

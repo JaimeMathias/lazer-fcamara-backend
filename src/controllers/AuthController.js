@@ -86,8 +86,8 @@ class AuthServer {
         }
     }catch (error) {
       console.log(error)
-      return response.status(400).json({
-        msg: "Error to connect"
+      return response.status(500).json({
+        msg: "Server error"
       })
     }
   }
@@ -126,7 +126,7 @@ class AuthServer {
       if(Platform == '' || Platform == undefined) {
         return response.status(200).json({auth: true})
       } else {
-        return response.status(200).json({
+        return response.status(201).json({
           auth: true,
           id_platform: Platform.id_platform
         })
