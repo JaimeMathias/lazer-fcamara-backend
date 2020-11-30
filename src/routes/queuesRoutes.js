@@ -8,7 +8,7 @@ const queuesRoutes = Router();
 
 queuesRoutes.get('/' ,QueueController.queueData)
 queuesRoutes.put('/polling', AuthController.Auth, QueueController.polling)
-queuesRoutes.put('/', AuthController.Auth ,QueueController.store)
+queuesRoutes.post('/', AuthController.Auth ,QueueController.store)
 queuesRoutes.put('/exit', AuthController.Auth ,QueueController.quit)
 
 export default queuesRoutes;

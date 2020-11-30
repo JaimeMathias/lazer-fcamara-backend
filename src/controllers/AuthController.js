@@ -107,6 +107,35 @@ class AuthServer {
       });
   }
 
+  async validate(request, response) {
+    let token = request.headers['x-access-token']
+
+    if (!token) return response.status(401).json({ auth: false, message: 'Token not found.' });
+
+    jwt.verify(token, process.env.SECRET, async function(err, decoded) {
+      if (err) return response.status(500).json({ auth: false, message: "Token isn't valid."});
+
+      const Platform = await Queues.findOne({
+        raw: true,
+        attributes: ['id_platform'],
+        where: {
+          id_user: decoded.id,
+          status_user: true
+        }
+      })
+
+      if(Platform == '' || Platform == undefined) {
+        return response.status(200).json({auth: true})
+      } else {
+        return response.status(200).json({
+          auth: true,
+          id_platform: Platform.id_platform
+        })
+      }
+
+      });
+  }
+
   async Destroy(request, response) {
     response.json({
       auth: false,

@@ -74,21 +74,22 @@ module.exports = new (class QueuesController {
       response.status(400).json({ msg: "Plataforma ou Usuário inexistentes" });
     }
   }
+
   async queueData(request, response) {
     try {
       const plat = await Platforms.findAll();
 
       let obj = {};
       let arr = [];
-
+      var index = 0
       plat.forEach(async (platform, indice) => {
-        indice += 1;
+        index += 1;
 
         const storage = await Queues.findAll({
           raw: true,
           attributes: ["id_user", "id_platform"],
           where: {
-            id_platform: indice || 1,
+            id_platform: index || 1,
 	          status_user: true
           },
         });
@@ -103,17 +104,34 @@ module.exports = new (class QueuesController {
           id_platform: id,
           size,
         };
-
         arr.push(obj);
         /*
                 @ o loop so acaba quando percorrer todas as plataformas
                  */
-        if (indice == plat.length) {
-          response.json(arr);
+
+        if (index == plat.length) {
+          if(arr.length == plat.length) {
+              // faz em ordem de tamanho apartir do array.size
+            arr.sort(function (a, b) {
+              
+              if (a.size < b.size) {
+                return 1;
+              }
+              if (a.size > b.size) {
+                return -1;
+              }
+
+              return 0;
+            });
+
+            response.status(200).json(arr);
+          } 
         }
       });
+
     } catch (error) {
-      response.status(400).json({ msg: "Erro na requisição" });
+      console.log(error)
+      response.status(400).json({ msg: "Error on request" });
     }
   }
   async polling(request, response) {
