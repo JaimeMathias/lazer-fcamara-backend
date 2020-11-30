@@ -18,10 +18,10 @@ module.exports = new (class UserController {
         response.status(400).json({ msg: "User not found" });
       }
 
-      response.json(user);
+      response.status(200).json(user);
     } catch (error) {
       console.log(error);
-      response.status(400).json({ msg: "Falha ao buscar" });
+      response.status(500).json({ msg: "Error on server" });
     }
   }
 
@@ -35,7 +35,7 @@ module.exports = new (class UserController {
         return response.status(200).json(user);
       }
     } catch (error) {
-      response.status(400).json({ msg: "Falha ao buscar" });
+      response.status(500).json({ msg: "Error on server" });
     }
   }
 
@@ -46,7 +46,7 @@ module.exports = new (class UserController {
       let regex_validate = /^[a-z0-9.]+@fcamara.com.br$/;
 
       if (!email.match(regex_validate)) {
-        return response.status(400).json({ msg: "Email incorreto" });
+        return response.status(400).json({ msg: "e-mail is not allowed, try again using @fcamara.com.br" });
       }
 
       let hash = crypto.createHash('md5').update(password).digest("hex")
@@ -73,10 +73,10 @@ module.exports = new (class UserController {
 
     } catch (error) {
       if (error.errors[0]["type"] == "unique violation") {
-        response.status(400).json({ msg: "Email ja existente" });
+        response.status(400).json({ msg: "e-mail is existent, try again using other" });
       }
 
-      response.status(400).json({ msg: "Falha no cadastro" });
+      response.status(500).json({ msg: "Error on server" });
     }
   }
   async remove(request, response) {
@@ -103,7 +103,7 @@ module.exports = new (class UserController {
       }
     } catch (error) {
       console.log(error);
-      response.status(400).json({ msg: "Falha ao deletar" });
+      response.status(500).json({ msg: "Error on server" });
     }
   }
   async update(request, response) {
@@ -134,14 +134,14 @@ module.exports = new (class UserController {
         let regex_validate = /^[a-z0-9.]+@fcamara.com.br$/;
 
         if (!email.match(regex_validate)) {
-          return response.status(400).json({ msg: "Email incorreto" });
+          return response.status(400).json({ msg: "e-mail is not allowed, try again using @fcamara.com.br" });
         }
 
         return response.status(200).json(final);
       }
     } catch (error) {
       console.log(error);
-      response.status(400).json({ msg: "Update not available" });
+      response.status(500).json({ msg: "Update not available" });
     }
   }
 })();

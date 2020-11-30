@@ -9,7 +9,7 @@ module.exports = new (class PlatformsController {
       response.status(201).json({ msg: "created at success" });
     } catch (error) {
       console.log(error);
-      response.status(400).json({ msg: "failed to create" });
+      response.status(500).json({ msg: "Failure to create" });
     }
   }
 
@@ -25,10 +25,10 @@ module.exports = new (class PlatformsController {
       if (platform == "" || platform == null) {
         response.status(404).json({ msg: "Platform not found" });
       }
-      response.json(platform);
+      response.status(200).json(platform);
     } catch (error) {
       console.log(error);
-      response.status(404).json({ msg: "Platform not found" });
+      response.status(500).json({ msg: "Server error" });
     }
   }
 
