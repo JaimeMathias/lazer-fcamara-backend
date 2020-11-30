@@ -113,12 +113,13 @@ module.exports = new (class QueuesController {
 
         let { id, name, location } = platform;
 
-        // let stringName = name + ' - ' +location
+        let stringName = name + ' - ' +location
 
         let size = storage.length;
 
         obj = {
           id_platform: id,
+          stringName,
           size,
         };
         arr.push(obj);
