@@ -213,13 +213,13 @@ module.exports = new (class QueuesController {
         },
       });
 
-      const emailsNoRepeat = await Emails.findAll({
-        raw: true,
-        attributes: ["id_msg", "typeId"],
-        where: {
-          id_user: user,
-        },
-      });
+      // const emailsNoRepeat = await Emails.findAll({
+      //   raw: true,
+      //   attributes: ["id_msg", "typeId"],
+      //   where: {
+      //     id_user: user,
+      //   },
+      // });
 
       const Fila = await Queues.findAll({
         where: {
@@ -238,19 +238,19 @@ module.exports = new (class QueuesController {
         }
       });
 
-      if (userEmail.receiveEmail == true && userEmail.receiveEmail == true) {
-        if (emailsNoRepeat != null) {
-          if (emailsNoRepeat.typeId == 1) Email.SendEmail(msgs.Next, user, 2);
-          /* faz a lógica inversa, se o usuário ja tiver recebido email quando estava na posicao 2, ele vai receber o novo na posição 1 */
-          if (emailsNoRepeat.typeId == 2) Email.SendEmail(msgs.Actual, user, 1);
-        } else {
-          if (count == 1) {
-            Email.SendEmail(msgs.Actual, user, 1);
-          } else if (count == 2) {
-            Email.SendEmail(msgs.Next, user, 2);
-          }
-        }
-      }
+      // if (userEmail.receiveEmail == true && userEmail.receiveEmail == true) {
+      //   if (emailsNoRepeat != null) {
+      //     if (emailsNoRepeat.typeId == 1) Email.SendEmail(msgs.Next, user, 2);
+      //     /* faz a lógica inversa, se o usuário ja tiver recebido email quando estava na posicao 2, ele vai receber o novo na posição 1 */
+      //     if (emailsNoRepeat.typeId == 2) Email.SendEmail(msgs.Actual, user, 1);
+      //   } else {
+      //     if (count == 1) {
+      //       Email.SendEmail(msgs.Actual, user, 1);
+      //     } else if (count == 2) {
+      //       Email.SendEmail(msgs.Next, user, 2);
+      //     }
+      //   }
+      // }
 
       response.status(200).json({
         position,
