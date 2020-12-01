@@ -1,13 +1,14 @@
-"use strict";const { Platforms, Queues, Users, Emails } = require("../models");
-const Email = require('../controllers/EmailController');
-const msgs = require('./services/email')
+"use strict";
+const { Platforms, Queues, Users, Emails } = require("../models");
+const Email = require("../controllers/EmailController");
+const msgs = require("./services/email");
 module.exports = new (class QueuesController {
   async store(request, response) {
     try {
       const user = response.locals.user.id;
 
       const { platform } = request.body;
-      console.log('O ERRO TA AQUI PARCEIRO', platform)
+      console.log("O ERRO TA AQUI PARCEIRO", platform);
       const User = await Queues.findOne({
         where: {
           id_user: user,
@@ -15,39 +16,45 @@ module.exports = new (class QueuesController {
         },
       });
       const ReceiveEmail = await Users.findOne({
-        raw:true,
-        attributes: ['receiveEmail'],
+        raw: true,
+        attributes: ["receiveEmail"],
         where: {
-          id: user
-        }
-      })
+          id: user,
+        },
+      });
       /*
        * @ retorna a posição do usuário e a fila
        */
-console.log(ReceiveEmail)
+      console.log(ReceiveEmail);
       const Fila = await Queues.findAll({
         where: {
           id_platform: platform,
-	        status_user: true
+          status_user: true,
         },
-        order: [["updatedAt", "DESC"]],
+        order: [["updatedAt", "ASC"]],
       });
 
-      
-      let count = 1;
+      let count = 0;
+      let position;
       Fila.forEach((item) => {
+        count += 1;
         if (item.dataValues.id_user == user) {
-          return count;
+          position = count;
         }
-        count = count + 1;
       });
 
       if (User != null) {
         await User.update({
           status_user: true,
         });
-        
-        response.status(201).json({ msg: "User is on queue", position: count, notification:  ReceiveEmail.receiveEmail});
+
+        response
+          .status(201)
+          .json({
+            msg: "User is on queue",
+            position,
+            notification: ReceiveEmail.receiveEmail,
+          });
       }
 
       if (!User) {
@@ -57,7 +64,13 @@ console.log(ReceiveEmail)
           id_platform: platform,
           status_user: true,
         });
-        response.status(201).json({ msg: "User is on queue", position: count, notification:  ReceiveEmail.receiveEmail });
+        response
+          .status(201)
+          .json({
+            msg: "User is on queue",
+            position,
+            notification: ReceiveEmail.receiveEmail,
+          });
       }
     } catch (err) {
       console.log(err);
@@ -72,22 +85,20 @@ console.log(ReceiveEmail)
       const User = await Queues.findOne({
         where: { id_user: user, id_platform: platform },
       });
-      
-      
+
       const UserMail = await Emails.findAll({
         where: {
-          id_user: user
-        }
-      })
+          id_user: user,
+        },
+      });
 
-      if(UserMail == null) {
+      if (UserMail == null) {
         const UserLog = await Emails.destroy({
           where: {
-            id_user: user
-          }
-        })
+            id_user: user,
+          },
+        });
       }
-      
 
       await User.update({
         status_user: false,
@@ -106,32 +117,30 @@ console.log(ReceiveEmail)
 
       const atualStatus = await Users.findOne({
         raw: true,
-        attributes: ['receiveEmail'],
+        attributes: ["receiveEmail"],
         where: {
-          id: user
-        }
-      })
+          id: user,
+        },
+      });
 
       const args = atualStatus.receiveEmail == true ? false : true;
 
       const userUpdate = await Users.update(
-        {receiveEmail: args},
-        {where: {id: user}}
-      )
-      console.log(userUpdate)
-      
+        { receiveEmail: args },
+        { where: { id: user } }
+      );
+      console.log(userUpdate);
 
-    return response.status(200).json({
-      msg: "Status updated with sucessfully"
-    })
+      return response.status(200).json({
+        msg: "Status updated with sucessfully",
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return response.status(500).json({
-        msg: "Error on request"
-      })
+        msg: "Error on request",
+      });
     }
   }
-  
 
   async queueData(request, response) {
     try {
@@ -139,7 +148,7 @@ console.log(ReceiveEmail)
 
       let obj = {};
       let arr = [];
-      var index = 0
+      var index = 0;
       plat.forEach(async (platform, indice) => {
         index += 1;
 
@@ -148,13 +157,13 @@ console.log(ReceiveEmail)
           attributes: ["id_user", "id_platform"],
           where: {
             id_platform: index || 1,
-	          status_user: true
+            status_user: true,
           },
         });
 
         let { id, name, location } = platform;
 
-        let stringName = name + ' - ' +location
+        let stringName = name + " - " + location;
 
         let size = storage.length;
 
@@ -168,10 +177,9 @@ console.log(ReceiveEmail)
                  */
 
         if (index == plat.length) {
-          if(arr.length == plat.length) {
-              // faz em ordem de tamanho apartir do array.size
+          if (arr.length == plat.length) {
+            // faz em ordem de tamanho apartir do array.size
             arr.sort(function (a, b) {
-              
               if (a.size < b.size) {
                 return 1;
               }
@@ -183,36 +191,35 @@ console.log(ReceiveEmail)
             });
 
             response.status(200).json(arr);
-          } 
+          }
         }
       });
-
     } catch (error) {
-      console.log(error)
+      console.log(error);
       response.status(500).json({ msg: "Error on request" });
     }
   }
   async polling(request, response) {
     try {
-      const user = response.locals.user.id; 
-       
+      const user = response.locals.user.id;
+
       const { platform } = request.params;
 
       const userEmail = await Users.findOne({
-        raw:true,
-        attributes: ['email', 'receiveEmail'],
+        raw: true,
+        attributes: ["email", "receiveEmail"],
         where: {
-          id: user
-        }
-      })
+          id: user,
+        },
+      });
 
       const emailsNoRepeat = await Emails.findAll({
-        raw:true,
-        attributes: ['id_msg', 'typeId'],
+        raw: true,
+        attributes: ["id_msg", "typeId"],
         where: {
-          id_user: user
-        }
-      }) 
+          id_user: user,
+        },
+      });
 
       const Fila = await Queues.findAll({
         where: {
@@ -222,34 +229,31 @@ console.log(ReceiveEmail)
         order: [["updatedAt", "ASC"]],
       });
 
-      let count = 1;
-
+      let count = 0;
+      let position;
       Fila.forEach((item) => {
-console.log(item.dataValues)
+        count += 1;
         if (item.dataValues.id_user == user) {
-	console.log(item.dataValues.id_user,'=< id user')
-console.log(user)    
-      return count;
-        } else {
-        count = count + 1;
- }     });
+          position = count;
+        }
+      });
 
-      if(userEmail.receiveEmail == true && userEmail.receiveEmail == true) {
-        if(emailsNoRepeat != null) {
-          if(emailsNoRepeat.typeId == 1) Email.SendEmail(msgs.Next, user, 2);
+      if (userEmail.receiveEmail == true && userEmail.receiveEmail == true) {
+        if (emailsNoRepeat != null) {
+          if (emailsNoRepeat.typeId == 1) Email.SendEmail(msgs.Next, user, 2);
           /* faz a lógica inversa, se o usuário ja tiver recebido email quando estava na posicao 2, ele vai receber o novo na posição 1 */
-          if(emailsNoRepeat.typeId == 2) Email.SendEmail(msgs.Actual, user, 1); 
+          if (emailsNoRepeat.typeId == 2) Email.SendEmail(msgs.Actual, user, 1);
         } else {
-          if(count == 1) {
+          if (count == 1) {
             Email.SendEmail(msgs.Actual, user, 1);
-          } else if(count ==2) {
+          } else if (count == 2) {
             Email.SendEmail(msgs.Next, user, 2);
           }
         }
-    } 
+      }
 
       response.status(200).json({
-        position: count
+        position,
       });
     } catch (error) {
       console.log(error);

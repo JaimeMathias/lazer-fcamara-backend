@@ -55,29 +55,27 @@ class AuthServer {
           if(platform) {
             const Fila = await Queues.findAll({
               where: {
-                id_platform,
-                status_user: true
+                id_platform: platform,
+                status_user: true,
               },
-              order: [[
-                'updatedAt', 'DESC'
-              ]]
-            })
-
-            let count = 1
-
+              order: [["updatedAt", "ASC"]],
+            });
+      
+            let count = 0;
+            let position;
             Fila.forEach((item) => {
-              if(item.dataValues.id_user == id_user) {
-                return count;
+              count += 1;
+              if (item.dataValues.id_user == user) {
+                position = count;
               }
-              count = count + 1
-            })
+            });
 
             response.status(200).json({
               auth: true,
               token,
               id_platform,
               allowNotification: user.dataValues.receiveEmail,
-              position: count
+              position,
             
             })
             return;
@@ -140,19 +138,19 @@ class AuthServer {
 
       const Fila = await Queues.findAll({
         where: {
-          id_platform: Platform.id_platform,
-	        status_user: true
+          id_platform: platform,
+          status_user: true,
         },
-        order: [["updatedAt", "DESC"]],
+        order: [["updatedAt", "ASC"]],
       });
 
-
-      let count = 1;
+      let count = 0;
+      let position;
       Fila.forEach((item) => {
-        if (item.dataValues.id_user == decoded.id) {
-          return count;
+        count += 1;
+        if (item.dataValues.id_user == user) {
+          position = count;
         }
-        count = count + 1;
       });
 
 
@@ -163,7 +161,7 @@ class AuthServer {
           auth: true,
           id_platform: Platform.id_platform,
           allowNotification: User.receiveEmail,
-          position: count
+          position,
         })
       }
 
