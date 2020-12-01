@@ -7,7 +7,6 @@
     "host": "salt.db.elephantsql.com",
     "dialect": "postgres"
 
-<<<<<<< HEAD
   },
   "production": {
     
@@ -16,8 +15,5 @@
     "database": "xdhfyvez",
     "host": "salt.db.elephantsql.com",
     "dialect": "postgres"
-
-=======
->>>>>>> develop
   }
 }
