@@ -9,7 +9,7 @@ app.use(_express2.default.json());
 
 _cors2.default.call(void 0, {credentials: true, origin: true})
 
-app.use(cors())
+app.use(_cors())
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");

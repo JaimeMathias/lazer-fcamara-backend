@@ -2,6 +2,6 @@
 var _app = require('./app'); var _app2 = _interopRequireDefault(_app);
 
 _app2.default.listen(process.env.PORT, () => {
-  console.log('🚀 Server started on port 3333!');
+  console.log('🚀 Server started on heroku!');
 
 });
