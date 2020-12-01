@@ -7,5 +7,14 @@
     "host": "salt.db.elephantsql.com",
     "dialect": "postgres"
 
+  },
+  "production": {
+    
+    "username": "xdhfyvez",
+    "password": "hvI0Z8jAh5KhT_JT-u3Uwcy9cQvxIMSi",
+    "database": "xdhfyvez",
+    "host": "salt.db.elephantsql.com",
+    "dialect": "postgres"
+
   }
 }
