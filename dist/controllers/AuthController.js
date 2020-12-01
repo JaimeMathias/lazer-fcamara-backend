@@ -4,6 +4,7 @@ require('dotenv').config();
 const crypto = require('crypto');
 const { Users, Queues, Platforms } = require('../models')
 
+
 class AuthServer {
 
   async login (request, response, next) {
