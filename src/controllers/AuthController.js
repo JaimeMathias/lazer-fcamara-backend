@@ -126,8 +126,6 @@ class AuthServer {
         }
       })
 
-      
-
       const User = await Users.findOne({
         raw: true,
         attributes: ['receiveEmail'],
@@ -135,10 +133,14 @@ class AuthServer {
           id: decoded.id
         }
       })
-
+      
+      if(Platform == '' || Platform == undefined) {
+        return response.status(200).json({auth: true, allowNotification: User.receiveEmail})
+      } 
+      
       const Fila = await Queues.findAll({
         where: {
-          id_platform: platform,
+          id_platform: Platform.id_platform,
           status_user: true,
         },
         order: [["updatedAt", "ASC"]],
@@ -153,17 +155,14 @@ class AuthServer {
         }
       });
 
-
-      if(Platform == '' || Platform == undefined) {
-        return response.status(200).json({auth: true, allowNotification: User.receiveEmail})
-      } else {
         return response.status(201).json({
           auth: true,
           id_platform: Platform.id_platform,
           allowNotification: User.receiveEmail,
           position,
         })
-      }
+      
+
 
       });
   }
