@@ -59,24 +59,21 @@ class AuthServer {
               },
               order: [["updatedAt", "ASC"]],
             });
-      
             let count = 0;
             let position;
             Fila.forEach((item) => {
               count += 1;
-              if (item.dataValues.id_user == user) {
-                position = count;
+              if (item.dataValues.id_user == user.id) {
+                position = count;                
               }
             });
-            // console.log('esta aquuuuuuuuuuuuuuuu/i')
-            // console.log(token, id_platform, user.dataValues.receiveEmail,position)
-            
+
               return response.status(200).json({
                 auth: true,
                 token,
                 id_platform,
-                allowNotification: user.dataValues.receiveEmail,
-                position,
+                position: position,
+                allowNotification: user.dataValues.receiveEmail
               
               })  
           }
@@ -125,7 +122,7 @@ class AuthServer {
           status_user: true
         }
       })
-
+      const user = decoded.id;
       const User = await Users.findOne({
         raw: true,
         attributes: ['receiveEmail'],
