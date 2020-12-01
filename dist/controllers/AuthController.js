@@ -19,9 +19,9 @@ class AuthServer {
           password: hash
         }
       })
+      console.log(user.id)
 
       if(!user) response.status(400).json({msg: "User not autenticated"})
-
         const Redirect = await Queues.findAll({
           where: {
             id_user: user.id,
@@ -50,12 +50,11 @@ class AuthServer {
           let token = jwt.sign({id}, process.env.SECRET, {
             expiresIn: 100000
           });
-
             // @@ se o usuario estiver cadastrado em fila redireciona
           if(platform) {
             const Fila = await Queues.findAll({
               where: {
-                id_platform: platform,
+                id_platform: platform.id_platform,
                 status_user: true,
               },
               order: [["updatedAt", "ASC"]],
@@ -69,16 +68,17 @@ class AuthServer {
                 position = count;
               }
             });
-
-            response.status(200).json({
-              auth: true,
-              token,
-              id_platform,
-              allowNotification: user.dataValues.receiveEmail,
-              position,
+            // console.log('esta aquuuuuuuuuuuuuuuu/i')
+            // console.log(token, id_platform, user.dataValues.receiveEmail,position)
             
-            })
-            return;
+              return response.status(200).json({
+                auth: true,
+                token,
+                id_platform,
+                allowNotification: user.dataValues.receiveEmail,
+                position,
+              
+              })  
           }
 
           return response.json({
