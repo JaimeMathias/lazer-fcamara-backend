@@ -52,7 +52,7 @@ module.exports = new (class QueuesController {
           .status(201)
           .json({
             msg: "User is on queue",
-            position,
+            position: position,
             notification: ReceiveEmail.receiveEmail,
           });
       }
