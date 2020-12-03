@@ -1,4 +1,4 @@
-"use strict";
+"use strict";"use strict";
 const { Platforms, Queues, Users, Emails } = require("../models");
 const Email = require("../controllers/EmailController");
 const msgs = require("./services/email");
@@ -52,7 +52,7 @@ module.exports = new (class QueuesController {
           .status(201)
           .json({
             msg: "User is on queue",
-            position,
+            position: position,
             notification: ReceiveEmail.receiveEmail,
           });
       }

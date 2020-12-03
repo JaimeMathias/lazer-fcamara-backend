@@ -1,4 +1,4 @@
-"use strict";const jwt = require('jsonwebtoken');
+"use strict";"use strict";const jwt = require('jsonwebtoken');
 const { next } = require('sucrase/dist/parser/tokenizer');
 require('dotenv').config();
 const crypto = require('crypto');
